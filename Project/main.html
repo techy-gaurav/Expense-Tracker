@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ledger — Expense Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="sheet">
+
+    <!-- ===== Header / Stamp ===== -->
+    <header class="sheet__header">
+      <div class="brand">
+        <span class="brand__mark">✦</span>
+        <div class="brand__text">
+          <h1>Ledger</h1>
+          <p>a plain-paper expense tracker</p>
+        </div>
+      </div>
+
+      <div class="stamp" id="balanceStamp">
+        <div class="stamp__ring">
+          <span class="stamp__label" id="balanceLabel">BALANCE</span>
+          <span class="stamp__amount" id="balanceAmount">₹0.00</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== Receipt tape totals ===== -->
+    <section class="tape" aria-label="Summary totals">
+      <div class="tape__row">
+        <span class="tape__dots"></span>
+      </div>
+      <div class="tape__totals">
+        <div class="tape__item">
+          <span class="tape__k">Income</span>
+          <span class="tape__v tape__v--income" id="totalIncome">₹0.00</span>
+        </div>
+        <div class="tape__item">
+          <span class="tape__k">Expense</span>
+          <span class="tape__v tape__v--expense" id="totalExpense">₹0.00</span>
+        </div>
+        <div class="tape__item">
+          <span class="tape__k">Entries</span>
+          <span class="tape__v" id="totalCount">0</span>
+        </div>
+      </div>
+      <div class="tape__row">
+        <span class="tape__dots"></span>
+      </div>
+    </section>
+
+    <div class="grid">
+
+      <!-- ===== Entry form ===== -->
+      <section class="card entry-card" aria-labelledby="formTitle">
+        <h2 id="formTitle" class="card__title">New entry <span class="card__title-line"></span></h2>
+
+        <form id="txForm" novalidate>
+          <input type="hidden" id="txId">
+
+          <div class="field">
+            <label for="description">Description</label>
+            <input type="text" id="description" placeholder="e.g. Grocery run" autocomplete="off" required>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="amount">Amount</label>
+              <input type="number" id="amount" placeholder="0.00" step="0.01" min="0.01" required>
+            </div>
+            <div class="field">
+              <label for="date">Date</label>
+              <input type="date" id="date" required>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="type">Type</label>
+              <select id="type">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="category">Category</label>
+              <select id="category">
+                <option>Food</option>
+                <option>Travel</option>
+                <option>Bills</option>
+                <option>Salary</option>
+                <option>Shopping</option>
+                <option>Health</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <p class="error" id="formError" role="alert"></p>
+
+          <div class="field-row field-row--actions">
+            <button type="submit" class="btn btn--primary" id="submitBtn">Add entry</button>
+            <button type="button" class="btn btn--ghost" id="cancelEditBtn" hidden>Cancel edit</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ===== Category breakdown ===== -->
+      <section class="card breakdown-card" aria-labelledby="breakdownTitle">
+        <h2 id="breakdownTitle" class="card__title">By category <span class="card__title-line"></span></h2>
+        <div id="breakdown" class="breakdown"></div>
+        <p class="empty-note" id="breakdownEmpty">Nothing to show yet.</p>
+      </section>
+
+    </div>
+
+    <!-- ===== Transactions ===== -->
+    <section class="card list-card" aria-labelledby="listTitle">
+      <div class="list-card__head">
+        <h2 id="listTitle" class="card__title">Entries <span class="card__title-line"></span></h2>
+
+        <div class="filters">
+          <select id="filterType">
+            <option value="all">All types</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+          <select id="filterCategory">
+            <option value="all">All categories</option>
+          </select>
+          <input type="text" id="filterSearch" placeholder="Search description…">
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="ledger-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th class="num">Amount</th>
+              <th class="actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="txBody"></tbody>
+        </table>
+      </div>
+
+      <p class="empty-note" id="listEmpty">No entries recorded yet — add your first one above.</p>
+    </section>
+
+    <footer class="sheet__footer">
+      <p>Stored only in this browser · <span id="entryCount">0</span> entries · No account, no server</p>
+    </footer>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
